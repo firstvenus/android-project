@@ -14,8 +14,7 @@ import com.example.mainactivity.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView txt_signin;
-    private  TextView txt_signup;
+    private Button btn_signin, btn_signup;
   //  DatabaseConnection db;
 
     @Override
@@ -24,30 +23,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        txt_signin = (TextView) findViewById(R.id.txt_signin);
-        txt_signup = (TextView) findViewById(R.id.txt_signup);
-    }}
+        btn_signin = (Button) findViewById(R.id.btn_signin);
+        btn_signup = (Button) findViewById(R.id.btn_signup);
 
- /*       txt_signin.setOnClickListener(new View.OnClickListener(){
+
+        btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View V){
-
-                Intent intent = new Intent(MainActivity.this, SignInActivity.class);
-                startActivity(intent);
-
-            }
-        });
-        txt_signup.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View V){
-
+            public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
                 startActivity(intent);
-
+            }
+        });
+        btn_signin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(MainActivity.this, SignInActivity.class);
+                startActivity(intent);
             }
         });
 
+    }}
 
-    }
-}
-*/

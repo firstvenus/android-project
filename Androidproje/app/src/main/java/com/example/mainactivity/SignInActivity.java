@@ -3,118 +3,124 @@ package com.example.mainactivity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
+import android.app.admin.SystemUpdatePolicy;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
+
 public class SignInActivity extends AppCompatActivity {
-    private EditText txt_email;
-    private EditText txt_password;
+    private EditText txt_email,txt_password;
     private Button btn_login;
     private TextView txt_goSignUp;
 
-    //FirebaseAuth girisyetkisi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        txt_email = (EditText)findViewById(R.id.txt_email);
+        txt_email = (EditText) findViewById(R.id.txt_email);
         txt_password = (EditText) findViewById(R.id.txt_password);
         btn_login = (Button) findViewById(R.id.btn_login);
+        txt_goSignUp = (TextView) findViewById(R.id.txt_goSignUp);
 
-        //girisyetkisi=FirebaseAuth.getInstance();
-        txt_goSignUp=(TextView)findViewById(R.id.txt_goSignUp);
+
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CreateAccount();
+            }
+        });
 
         txt_goSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SignInActivity.this,SignUpActivity.class));
+                startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
             }
         });
 
-        final DatabaseConnection db = new DatabaseConnection(this);
 
-        btn_login.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void CreateAccount() {
+        String user_email= txt_email.getText().toString();
+        String user_password= txt_password.getText().toString();
+
+        if(TextUtils.isEmpty(user_email)){
+            Toast.makeText(this, "Email can not be blank", Toast.LENGTH_SHORT).show();
+        }
+
+        else if(TextUtils.isEmpty(user_password)){
+            Toast.makeText(this, "Password can not be blank", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Validateuserinformation(user_email,user_password);
+        }
+    }
+
+    private void Validateuserinformation(final String user_email, final String user_password) {
+
+        final DatabaseReference RootRef;
+        RootRef = FirebaseDatabase.getInstance().getReference();
+
+        RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                final ProgressDialog pdGiris=new ProgressDialog(SignInActivity.this);
-                pdGiris.setMessage("Logging In..");
-                pdGiris.show();
-                String str_email = "";
-                String str_password = "";
-                if(txt_email.getText() != null && !txt_email.getText().toString().isEmpty() && txt_password.getText() != null && !txt_password.getText().toString().isEmpty()){
-                    str_email=txt_email.getText().toString();
-                    str_password=txt_password.getText().toString();
-                }
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                // Log.d("email","e"+str_email+"p"+str_password);
-                if(str_email.trim().isEmpty() || str_password.trim().isEmpty()){
-                    Toast.makeText(SignInActivity.this,"Please fill in all fields.",Toast.LENGTH_LONG).show();
-                }
-                else{
-                    //giris yapma kodları
+                if(!(dataSnapshot.child("Users").child(user_email).exists()))
+                {
+                    HashMap<String, Object> userdataMap = new HashMap<>();
+                    userdataMap.put("email", user_email);
+                    userdataMap.put("password", user_password);
 
-                    if(db.authenticateUser(str_email,str_password)){
-                        Toast.makeText(SignInActivity.this,"Login correct.",Toast.LENGTH_LONG).show();
-                        System.err.println(db.authenticateUser(str_email,str_password));
-                    }
-
-                    /*girisyetkisi.signInWithEmailAndPassword(str_email,str_password)
-                            .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
+                    RootRef.child("Users").child(user_email).updateChildren(userdataMap)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if(task.isSuccessful()){
-                                        DatabaseReference yolGiris= FirebaseDatabase.getInstance().getReference().child("users").child(girisyetkisi.getCurrentUser().getUid());
+                                public void onComplete(@NonNull Task<Void> task) {
 
-                                        yolGiris.addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                pdGiris.dismiss();
-                                                Intent intent=new Intent(SignInActivity.this,Category.class);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                startActivity(intent);
-                                                finish();//geri tuşuna bastığında aynı yere dönmesin diye
-                                            }
+                                    if(task.isSuccessful()) {
+                                        Toast.makeText(SignInActivity.this, "Congratulations, your account is successfully created", Toast.LENGTH_SHORT).show();
 
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                pdGiris.dismiss();
-
-                                            }
-                                        });
-                                    }
-                                    else{
-                                        pdGiris.dismiss();
-                                        Toast.makeText(SignInActivity.this,"Login failed.",Toast.LENGTH_LONG).show();
+                                        Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        Toast.makeText(SignInActivity.this, "Error. (try again)", Toast.LENGTH_SHORT).show();
 
                                     }
                                 }
-                            });*/
+                            });
+
+
+                } else {
+
+                    Toast.makeText(SignInActivity.this, "This" + user_email + "already exists", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                    startActivity(intent);
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
-
 
     }
 }

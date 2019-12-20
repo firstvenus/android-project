@@ -29,34 +29,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:fontFamily="@font/jacques_francois_shadow"
             android:gravity="center"
             android:text="TecnoMarket"
             android:textColor="#1A0D3C"
             android:textSize="50sp"
             android:textStyle="bold|italic" />
 
-        <TextView
-            android:id="@+id/txt_signin"
+        <Button
+            android:id="@+id/btn_signin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:gravity="center"
-            android:text="Sign In"
-            android:textColor="#1A0D3C"
-            android:textSize="30sp"
-            android:textStyle="italic" />
+            android:text="Sign In" />
 
-        <TextView
-            android:id="@+id/txt_signup"
+        <Button
+            android:id="@+id/btn_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="Sign Up"
-            android:textColor="#1A0D3C"
-            android:textSize="30sp"
-            android:textStyle="italic" />
+            android:text="Sign Up" />
 
     </LinearLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>
