@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bck2"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="5dp"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textStyle="bold|italic"
+            android:text="SIGN UP"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <EditText
+            android:id="@+id/txt_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="5dp"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="textPersonName"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/txt_surname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="5dp"
+            android:ems="10"
+            android:hint="Surname"
+            android:inputType="textPersonName"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/txt_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="5dp"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textPersonName"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/txt_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="5dp"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/input_design"
+            android:padding="10dp"
+            android:text="Register"
+            android:textAlignment="center"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/txt_goSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="5dp"
+            android:padding="10dp"
+            android:text="Do you have an account? Log in"
+            android:textAlignment="center"
+            android:textSize="10dp" />
+    </LinearLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
