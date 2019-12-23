@@ -1,0 +1,3 @@
+"0","#reading data for positive and negative words"
+"0","positivefile <- file.choose()"
+"0","positive_words <- read.delim(""positive-words.txt"")"

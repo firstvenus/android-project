@@ -1,0 +1,2 @@
+"0","negativefile <- file.choose()"
+"0","negative_words <- read.delim(""negative-words.txt"")"

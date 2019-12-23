@@ -1,0 +1,123 @@
+
+
+```{r}
+#import libraries 
+
+library(plyr) #to split and combine data
+
+library(stringr) #string operations
+
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+```{r}
+#reading data for positive and negative words
+positivefile <- file.choose()
+positive_words <- read.delim("positive-words.txt")
+
+```
+
+```{r}
+negativefile <- file.choose()
+negative_words <- read.delim("negative-words.txt")
+
+```
+
+```{r}
+#getting words
+positive_words <- scan("positive-words.txt", what = 'character')
+negative_words <- scan("negative-words.txt", what = 'character')
+
+```
+
+```{r}
+#declaring pozitive and negative words
+negative_words <- c(negative_words, 'wtf', 'shitty', 'sucks')
+positive_words <- c(positive_words, 'amazing', 'good', 'perfect')
+```
+
+```{r}
+#sentiment analysis (deciding whether its positive or negative)
+
+sentimentScore <- function(tweets, positive_words, negative_words, .progress='none')
+{
+  require(plyr)
+  require(stringr)
+  
+  scores = laply(sentences, function(tweets, positive_words, negative_words) {
+    
+    # cleaning data to work on
+    tweets = gsub('[[:punct:]]', '', tweets)
+    tweets = gsub('[[:cntrl:]]', '', tweets)
+    tweets = gsub('\\d+', '', tweets)
+    # and convert to lower case:
+    tweets = tolower(tweets)
+    
+    # split into words. str_split is in the stringr package
+    word.list = str_split(tweets, '\\s+')
+    # sometimes a list() is one level of hierarchy too much
+    words = unlist(word.list)
+    
+    # compare our words to the dictionaries of positive & negative terms
+    positive.matches = match(words, positive_words)
+    negative.matches = match(words, negative_words)
+    
+    # match() returns the position of the matched term or NA
+    # we just want a TRUE/FALSE:
+    positive.matches = !is.na(positive.matches)
+    negative.matches = !is.na(negative.matches)
+    
+    # and conveniently enough, TRUE/FALSE will be treated as 1/0 by sum():
+    score = sum(positive.matches) - sum(negative.matches)
+    
+    return(score)
+  }, positive_words, negative_words, .progress=.progress )
+  
+  scores.df = data.frame(score=scores, text=sentences)
+  return(scores.df)
+}
+
+
+```
+
+```{r}
+result <- sentimentScore(data$text,positive_words,negative_words)
+```
+
+```{r}
+summary(result$score)
+```
+
+```{r}
+hist(result$score, main = "Tweet Histogram", ylab = "Tweet Count", border = "black", col = "red", ylim = c(0,500))
+```
+
+```{r}
+dataFile <- file.choose()
+
+```
+
+
+```{r}
+mydata <- read.csv(dataFile)
+```
+
+```{r}
+View(mydata)
+```
+
+```{r}
+View(result)
+```
+
+```{r}
+plot(result)
+```
+
+```{r}
+
+head(result,10)
+```
+
+
+

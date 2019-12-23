@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1573387794308.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1713536765",
+    "id" : "2F178A26",
+    "lastKnownWriteTime" : 1573664652,
+    "last_content_update" : 1573664654686,
+    "path" : "C:/Users/red/Desktop/TEXT MINING/rproject/notebookR.Rmd",
+    "project_path" : "notebookR.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "64,13",
+        "scrollLine" : "31",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

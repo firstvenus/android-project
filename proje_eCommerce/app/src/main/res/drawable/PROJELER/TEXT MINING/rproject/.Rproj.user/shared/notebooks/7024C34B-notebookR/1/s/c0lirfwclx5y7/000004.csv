@@ -1,0 +1,1 @@
+"0","result <- sentimentScore(data$text,positive_words,negative_words)"

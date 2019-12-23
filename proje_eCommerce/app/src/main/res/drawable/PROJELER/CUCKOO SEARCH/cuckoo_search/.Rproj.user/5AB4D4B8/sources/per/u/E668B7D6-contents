@@ -1,0 +1,55 @@
+cuckoo.search <- function(n = 25) {
+  # discovery rate of alien eggs/solutions
+  pa <- 0.25
+  
+  ## Change this if you want to get better results
+  # Tolerance
+  tol <- 1.0e-5
+  ## Simple bounds of the search domain
+  nd <- 15
+  lb <- matrix(-5, 1, nd)
+  ub <- matrix(5, 1, nd)
+  
+  # Random initial solutions
+  nest <- matrix(0, n, nd)
+  for (i in 1:n) {
+    nest[i,] <- lb + (ub - lb) * runif(nd)
+  }
+  
+  # Get the current best
+  fitness <- 10^10 * matrix(1, n, 1)
+  current <- cuckoo.best.nest(nest, nest, fitness)
+  fmin <- current$fmin
+  bestnest <- current$best
+  nest <- current$nest
+  fitness <- current$fitness
+  
+  iter <- 0
+  # Start iterations
+  while (fmin > tol) {
+    # Generate new solutions (but keep the current best)
+    new_nest <- cuckoos.nest(nest, bestnest, lb, ub)
+    new_best <- cuckoos.best.nest(nest, new_nest, fitness)
+    fnew <- new_best$fmin
+    best <- new_best$best
+    nest <- new_best$nest
+    fitness <- new_best$fitness
+    # Update the counter
+    iter <- iter + n
+    # Discovery and randomization
+    new_nest <- empty.nests(nest, lb, ub, pa)
+    # Evaluate this set of solutions
+    new_best <- cuckoos.best.nest(nest, new_nest, fitness)
+    fnew <- new_best$fmin
+    best <- new_best$best
+    nest <- new_best$nest
+    fitness <- new_best$fitness
+    iter <- iter + n
+    # find the best objective so far
+    if (fnew<fmin) {
+      fmin <- fnew
+      bestnest <- best
+    }
+    print(cat('iter:',iter, 'fitness:', fmin))
+  }
+}

@@ -1,0 +1,7 @@
+"0","#getting words"
+"0","positive_words <- scan(""positive-words.txt"", what = 'character')"
+"2","Read 2013 items
+"
+"0","negative_words <- scan(""negative-words.txt"", what = 'character')"
+"2","Read 4783 items
+"

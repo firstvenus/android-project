@@ -1,0 +1,89 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+```{r}
+
+```
+
+```{r}
+install.packages('plyr')
+library(plyr)
+
+install.packages('stringr')
+library(stringr)
+
+#my data
+datafile <- file.choose()
+data <- read.csv(datafile)
+
+
+#reading data for positive and negative words
+positivefile <- file.choose()
+positive_words <- read.delim("positive-words.txt")
+
+negativefile <- file.choose()
+negative_words <- read.delim("negative-words.txt")
+
+#getting words
+positive_words <- scan("positive-words.txt", what = 'character')
+negative_words <- scan("negative-words.txt", what = 'character')
+
+negative_words <- c(negative_words, 'wtf', 'shitty', 'sucks')
+
+#sentiment analysis
+
+sentimentScore <- function(tweets, positive_words, negative_words, .progress='none')
+{
+  require(plyr)
+  require(stringr)
+  
+  scores = laply(sentences, function(tweets, positive_words, negative_words) {
+    
+    # cleaning
+    tweets = gsub('[[:punct:]]', '', tweets)
+    tweets = gsub('[[:cntrl:]]', '', tweets)
+    tweets = gsub('\\d+', '', tweets)
+    # and convert to lower case:
+    tweets = tolower(tweets)
+    
+    # split into words. str_split is in the stringr package
+    word.list = str_split(tweets, '\\s+')
+    # sometimes a list() is one level of hierarchy too much
+    words = unlist(word.list)
+    
+    # compare our words to the dictionaries of positive & negative terms
+    positive.matches = match(words, positive_words)
+    negative.matches = match(words, negative_words)
+    
+    # match() returns the position of the matched term or NA
+    # we just want a TRUE/FALSE:
+    positive.matches = !is.na(positive.matches)
+    negative.matches = !is.na(negative.matches)
+    
+    # and conveniently enough, TRUE/FALSE will be treated as 1/0 by sum():
+    score = sum(positive.matches) - sum(negative.matches)
+    
+    return(score)
+  }, positive_words, negative_words, .progress=.progress )
+  
+  scores.df = data.frame(score=scores, text=sentences)
+  return(scores.df)
+}
+
+result <- sentimentScore(data$text,positive_words,negative_words)
+
+summary(result$score)
+
+hist(result$score, main = "Histogram for Tweets", ylab = "Count of Tweets", border = "blue", col = "green", ylim = c(0,500))
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
