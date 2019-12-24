@@ -1,6 +1,7 @@
 package com.example.mainactivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import io.paperdb.Paper;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,11 +10,7 @@ import android.widget.Button;
 
 public class HomeActivity extends AppCompatActivity {
 
-
-
     private Button btn_logout;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,15 +21,13 @@ public class HomeActivity extends AppCompatActivity {
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Paper.book().destroy();
+
                 Intent intent = new Intent(HomeActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
-
-
-
-
-
 
     }
 }

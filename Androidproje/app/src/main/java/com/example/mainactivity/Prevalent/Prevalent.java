@@ -6,4 +6,7 @@ import com.example.mainactivity.Model.User;
 public class Prevalent {
 
     private static User CurrentOnlineUser;
+    public static final String UserEmailKey = "userEmail";
+    public static final String UserPasswordKey = "userPassword";
+
 }
